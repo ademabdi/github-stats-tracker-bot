@@ -26,3 +26,24 @@ def get_latest_snapshots():
     df = pd.read_sql_query(query, conn)
     conn.close()
     return df
+
+def get_latest_snapshot(owner,name):
+    df = get_latest_snapshots()
+    df_snapshot = df[(df["owner"] == owner) & (df["name"] == name)]
+    return df_snapshot
+
+def get_repo_history(owner,name):
+    conn = sqlite3.connect(DB_PATH)
+    query = """
+        SELECT f.captured_at, f.stars, f.forks, f.open_issues
+        FROM fact_repo_snapshot f
+        JOIN dim_repo d ON f.repo_id = d.repo_id
+        WHERE d.owner = ? AND d.name = ?
+        ORDER BY f.captured_at ASC
+    """
+    df = pd.read_sql_query(query, conn, params=(owner, name))
+    conn.close()
+    return df
+
+
+

@@ -3,8 +3,8 @@ import discord
 from discord.ext import commands
 from dotenv import load_dotenv
 
-from queries import get_latest_snapshot, get_repo_history
-from charts import generate_star_trend_chart
+from queries import get_latest_snapshot,get_repo_history
+from data_vis import generate_star_trend_chart
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_BOT_TOKEN")
